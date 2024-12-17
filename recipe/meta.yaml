@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/torch_harmonics-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torch_harmonics-{{ version }}.tar.gz
   sha256: 4a8556b0a3be2afd2a2d0080769b64b33df2da0df3121e99af85313a040827cb
   patches:
     - fix_numpy.diff
@@ -19,7 +19,7 @@ build:
     - export SETUPTOOLS_SCM_PRETEND_VERSION="$PKG_VERSION"  # [not win]
     - set "SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%"    # [win]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 0
+  number: 1
 
 requirements:
   build:
