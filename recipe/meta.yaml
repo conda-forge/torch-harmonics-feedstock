@@ -8,8 +8,6 @@ package:
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torch_harmonics-{{ version }}.tar.gz
   sha256: 082b6fa450252201be3256a58aa37ac6f382b64f076d928eeee8ae94f6dd7245
-  patches:
-    - fix_numpy.diff
 
 build:
   # Pytorch is not available on conda-forge for windows yet...
