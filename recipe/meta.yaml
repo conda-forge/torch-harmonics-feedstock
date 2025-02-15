@@ -13,6 +13,8 @@ build:
   # Pytorch is not available on conda-forge for windows yet...
   # https://github.com/conda-forge/pytorch-cpu-feedstock/pull/231
   skip: true  # [win]
+  # pytorch in conda-forge does not support CUDA 11.8 as of v2.5
+  skip: true  # [cuda_compiler_version == "11.8"]
   script:
     - export SETUPTOOLS_SCM_PRETEND_VERSION="$PKG_VERSION"  # [not win]
     - set "SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%"    # [win]
