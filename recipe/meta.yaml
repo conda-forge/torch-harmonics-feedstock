@@ -1,5 +1,5 @@
 {% set name = "torch-harmonics" %}
-{% set version = "0.7.4" %}
+{% set version = "0.8.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torch_harmonics-{{ version }}.tar.gz
-  sha256: fa7b7a86ded81600e32b55bd0c3c040a5dfef96849305670b7bb24fb96dda2c7
+  sha256: b44340184416283a3636640a9050c2187515d6bd9858fa0421b048b66465f773
 
 build:
   # Pytorch is not available on conda-forge for windows yet...
@@ -19,7 +19,7 @@ build:
     - export SETUPTOOLS_SCM_PRETEND_VERSION="$PKG_VERSION"  # [not win]
     - set "SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%"    # [win]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 2
+  number: 0
 
 requirements:
   build:
