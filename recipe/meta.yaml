@@ -1,13 +1,13 @@
 {% set name = "torch-harmonics" %}
-{% set version = "0.8.1" %}
+{% set version = "0.9.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/torch_harmonics-{{ version }}.tar.gz
-  sha256: f9ff6b2a877e492c9a9fa98dec85eb4be36265e4ec737127fb6eb2537337e9ff
+  url: https://github.com/NVIDIA/torch-harmonics/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 02092f897ac7afc5c6546c48a0cac3ac9de3560ec091c998fcf0ab73b6f87e4b
 
 build:
   # Pytorch is not available on conda-forge for windows yet...
@@ -15,11 +15,18 @@ build:
   skip: true  # [win]
   # pytorch in conda-forge does not support CUDA 11.8 as of v2.5
   skip: true  # [cuda_compiler_version == "11.8"]
+  ignore_run_exports_from:
+    - libcublas-dev    # [cuda_compiler_version != "None"]
+    - libcusolver-dev  # [cuda_compiler_version != "None"]
+    - libcusparse-dev  # [cuda_compiler_version != "None"]
   script:
     - export SETUPTOOLS_SCM_PRETEND_VERSION="$PKG_VERSION"  # [not win]
     - set "SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%"    # [win]
+    - export TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0;10.0;12.0+PTX"  # [cuda_compiler_version != "None"]
+    - export TORCH_DONT_CHECK_COMPILER_ABI=1                # [cuda_compiler_version != "None"]
+    - export FORCE_CUDA_EXTENSION=1                         # [cuda_compiler_version != "None"]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 5
+  number: 0
 
 requirements:
   build:
@@ -34,10 +41,15 @@ requirements:
     - libtorch
     - pytorch
     - pip
+    - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version != "None"]
+    - cuda-cudart-dev                           # [cuda_compiler_version != "None"]
+    - libcublas-dev                             # [cuda_compiler_version != "None"]
+    - libcusolver-dev                           # [cuda_compiler_version != "None"]
+    - libcusparse-dev                           # [cuda_compiler_version != "None"]
   run:
     - python
     - numpy >=1.22.4
-    - pytorch *=cuda*         # [cuda_compiler_version != "None"]
+    - pytorch * cuda*         # [cuda_compiler_version != "None"]
 
 test:
   imports:
@@ -51,7 +63,7 @@ about:
   home: https://github.com/NVIDIA/torch-harmonics
   summary: Differentiable signal processing on the sphere for PyTorch.
   license: BSD-3-Clause
-  license_file: LICENSE
+  license_file: LICENSE.txt
 
 extra:
   recipe-maintainers:

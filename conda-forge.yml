@@ -1,5 +1,5 @@
-azure:
-  free_disk_space: true
+workflow_settings:
+  free_disk_space: quick
 github:
   branch_name: main
   tooling_branch_name: main
