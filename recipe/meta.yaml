@@ -1,5 +1,5 @@
 {% set name = "torch-harmonics" %}
-{% set version = "0.9.0" %}
+{% set version = "0.9.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/NVIDIA/torch-harmonics/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 02092f897ac7afc5c6546c48a0cac3ac9de3560ec091c998fcf0ab73b6f87e4b
+  sha256: b55b942ece572db24d279ee78d7477c69cbb0826cabefc53ec0a9bd178bba522
 
 build:
   # Pytorch is not available on conda-forge for windows yet...
