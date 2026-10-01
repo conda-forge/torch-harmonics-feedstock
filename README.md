@@ -235,5 +235,6 @@ Feedstock Maintainers
 =====================
 
 * [@isuruf](https://github.com/isuruf/)
+* [@mwyau](https://github.com/mwyau/)
 * [@timkpaine](https://github.com/timkpaine/)
 
