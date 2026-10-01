@@ -10,11 +10,8 @@ source:
   sha256: 27b5f11d73bda5188bfc949b4d52b4120bbbe75f6e68a7543e103ee285b90b6c
 
 build:
-  # Pytorch is not available on conda-forge for windows yet...
-  # https://github.com/conda-forge/pytorch-cpu-feedstock/pull/231
+  # torch-harmonics does not support windows yet...
   skip: true  # [win]
-  # pytorch in conda-forge does not support CUDA 11.8 as of v2.5
-  skip: true  # [cuda_compiler_version == "11.8"]
   ignore_run_exports_from:
     - libcublas-dev    # [cuda_compiler_version != "None"]
     - libcusolver-dev  # [cuda_compiler_version != "None"]
