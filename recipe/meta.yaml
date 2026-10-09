@@ -10,8 +10,8 @@ source:
   sha256: acc9618afd5e14834bc4bed04884fbae42471e76f131bc7003d75da44bfb26de
 
 build:
-  # torch-harmonics does not support windows yet...
-  skip: true  # [win]
+  # torch-harmonics does not support windows and Python < 3.11.
+  skip: true  # [win or py<311]
   ignore_run_exports_from:
     - libcublas-dev    # [cuda_compiler_version != "None"]
     - libcusolver-dev  # [cuda_compiler_version != "None"]
@@ -48,14 +48,16 @@ requirements:
   run:
     - python
     - numpy >=1.22.4
-    - pytorch * cpu*          # [cuda_compiler_version == "None"]
-    - pytorch * cuda*         # [cuda_compiler_version != "None"]
+    - pytorch >=2.9.0 cpu*                      # [cuda_compiler_version == "None"]
+    - pytorch >=2.9.0 cuda*                     # [cuda_compiler_version != "None"]
 
 test:
   imports:
     - torch_harmonics
   commands:
     - pip check
+    - python -c "from torch_harmonics.disco import optimized_kernels_is_available; assert optimized_kernels_is_available()"
+    - python -c "from torch_harmonics.attention import optimized_kernels_is_available; assert optimized_kernels_is_available()"
   requires:
     - pip
 
