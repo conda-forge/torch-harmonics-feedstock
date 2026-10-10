@@ -1,5 +1,5 @@
 {% set name = "torch-harmonics" %}
-{% set version = "0.9.2" %}
+{% set version = "0.9.3" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/NVIDIA/torch-harmonics/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 27b5f11d73bda5188bfc949b4d52b4120bbbe75f6e68a7543e103ee285b90b6c
+  sha256: acc9618afd5e14834bc4bed04884fbae42471e76f131bc7003d75da44bfb26de
 
 build:
-  # torch-harmonics does not support windows yet...
-  skip: true  # [win]
+  # torch-harmonics does not support windows and Python < 3.11.
+  skip: true  # [win or py<311]
   ignore_run_exports_from:
     - libcublas-dev    # [cuda_compiler_version != "None"]
     - libcusolver-dev  # [cuda_compiler_version != "None"]
@@ -24,7 +24,7 @@ build:
     - export TORCH_HARMONICS_BUILD_CUDA_EXTENSION=1         # [cuda_compiler_version != "None"]
     - export MAX_JOBS=2                                     # [cuda_compiler_version != "None"]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 1
+  number: 0
 
 requirements:
   build:
@@ -48,14 +48,16 @@ requirements:
   run:
     - python
     - numpy >=1.22.4
-    - pytorch * cpu*          # [cuda_compiler_version == "None"]
-    - pytorch * cuda*         # [cuda_compiler_version != "None"]
+    - pytorch >=2.9.0 cpu*                      # [cuda_compiler_version == "None"]
+    - pytorch >=2.9.0 cuda*                     # [cuda_compiler_version != "None"]
 
 test:
   imports:
     - torch_harmonics
   commands:
     - pip check
+    - python -c "from torch_harmonics.disco import optimized_kernels_is_available; assert optimized_kernels_is_available()"
+    - python -c "from torch_harmonics.attention import optimized_kernels_is_available; assert optimized_kernels_is_available()"
   requires:
     - pip
 
