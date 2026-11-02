@@ -1,5 +1,5 @@
 {% set name = "torch-harmonics" %}
-{% set version = "0.9.3" %}
+{% set version = "0.9.4" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/NVIDIA/torch-harmonics/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: acc9618afd5e14834bc4bed04884fbae42471e76f131bc7003d75da44bfb26de
+  sha256: 1362060b1cb7d579650bc6cf4dc72b7c5e94b10ea787e15ebdbc2cb5a9b1336f
 
 build:
   # torch-harmonics does not support windows and Python < 3.11.
@@ -24,7 +24,7 @@ build:
     - export TORCH_HARMONICS_BUILD_CUDA_EXTENSION=1         # [cuda_compiler_version != "None"]
     - export MAX_JOBS=2                                     # [cuda_compiler_version != "None"]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 1
+  number: 0
 
 requirements:
   build:
